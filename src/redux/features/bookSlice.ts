@@ -11,7 +11,15 @@ export const bookSlice = createSlice ({
     initialState,
     reducers: {
         addBooking: (state, action:PayloadAction<BookingItem>)=>{
-            state.bookItems.push(action.payload)
+            const duplicateIndex = state.bookItems.findIndex(obj => 
+                obj.venue === action.payload.venue &&
+                obj.bookDate === action.payload.bookDate
+            )
+            if(duplicateIndex === -1) {
+                state.bookItems.push(action.payload)
+            } else {
+                state.bookItems[duplicateIndex] = action.payload
+            }
         },
         removeBooking: (state, action:PayloadAction<BookingItem>)=> {
             const remainItems = state.bookItems.filter( obj => {
